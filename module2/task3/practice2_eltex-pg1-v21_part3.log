@@ -1,0 +1,200 @@
+git config --global user.name "Pavel-04"
+git config --global user.email "mazinp77@ya.ru"
+git config --global init.defaultBranch main
+apt update
+Hit:1 http://ru.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Get:3 http://ru.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Hit:4 http://ru.archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:5 http://ru.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1,498 kB]
+Get:6 http://ru.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1,490 kB]
+Fetched 3,114 kB in 1s (2,672 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+177 packages can be upgraded. Run 'apt list --upgradable' to see them.
+apt install git gh
+ssh-keygen -t ed25519 -f ~/.ssh/github
+Generating public/private ed25519 key pair.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/github
+Your public key has been saved in /root/.ssh/github.pub
+The key fingerprint is:
+SHA256:pAZPKYEilKl4+UvoqPMD2QgdWlgKLEF4y+8bl+tHzZI root@eltex-practice2-pg1-v21
+The key's randomart image is:
++--[ED25519 256]--+
+|B*+..            |
+|B==  . .         |
+|*B +o o .        |
+|= *  = o         |
+|.= +  + S+       |
+|+ o +. .E o      |
+| + o..o. .       |
+|o o oo ..        |
+|oo...oo.         |
++----[SHA256]-----+
+gh auth login
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations on this host? SSH
+? Upload your SSH public key to your GitHub account? /root/.ssh/github.pub
+? Title for your SSH key: GitHub CLI
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: C773-32D2
+Press Enter to open github.com in your browser...
+! Failed opening a web browser at https://github.com/login/device
+  exec: "xdg-open,x-www-browser,www-browser,wslview": executable file not found in $PATH
+  Please try entering the URL in your browser manually
+✓ Authentication complete.
+- gh config set -h github.com git_protocol ssh
+✓ Configured git protocol
+! Authentication credentials saved in plain text
+✓ Uploaded the SSH key to your GitHub account: /root/.ssh/github.pub
+✓ Logged in as Pavel-04
+gh auth setup-git --hostname github.com
+gh repo create --public Eltex-practice
+✓ Created repository Pavel-04/Eltex-practice on GitHub
+  https://github.com/Pavel-04/Eltex-practice
+mkdir ~/Eltex-practice && cd ~/Eltex-practice
+echo "#Eltex Practice" >> README.md
+git init
+Initialized empty Git repository in /root/Eltex-practice/.git/
+git add README.md
+git commit -m "first commit"
+[main (root-commit) 15a4678] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+git branch -M main
+git remote add origin https://github.com/Pavel-04/Eltex-practice.git
+git status
+On branch main
+nothing to commit, working tree clean
+git push -u origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 224 bytes | 224.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/Pavel-04/Eltex-practice.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+scp ~/report_part1.txt root@172.16.9.195:~/Eltex-practice/module1/task1/
+report_part1.txt                                                                     100%  129   353.5KB/s   00:00
+scp ~/eltex-pg1-v21_part.log root@172.16.9.195:~/Eltex-practice/module1/task2/
+eltex-pg1-v21_part.log                                                               100% 5198    10.3MB/s   00:00
+scp ~/eltex-pg1-v21_part3.log root@172.16.9.195:~/Eltex-practice/module1/task3/
+eltex-pg1-v21_part3.log                                                              100% 2176     6.3MB/s   00:00
+scp ~/eltex-pg1-v21_part3_gt50M.log root@172.16.9.195:~/Eltex-practice/module1/task3/
+eltex-pg1-v21_part3_gt50M.log                                                        100%  553     1.7MB/s   00:00
+git add .
+git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   module1/task1/report_part1.txt
+        new file:   module1/task2/eltex-pg1-v21_part.log
+        new file:   module1/task3/eltex-pg1-v21_part3.log
+        new file:   module1/task3/eltex-pg1-v21_part3_gt50M.log
+git commit -m "Добавлена 1 практика"
+[main caaf9c7] Добавлена 1 практика
+ 4 files changed, 174 insertions(+)
+ create mode 100644 module1/task1/report_part1.txt
+ create mode 100644 module1/task2/eltex-pg1-v21_part.log
+ create mode 100644 module1/task3/eltex-pg1-v21_part3.log
+ create mode 100644 module1/task3/eltex-pg1-v21_part3_gt50M.log
+git push
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (10/10), 3.07 KiB | 3.07 MiB/s, done.
+Total 10 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/Pavel-04/Eltex-practice.git
+   15a4678..caaf9c7  main -> main
+mkdir ~/Eltex-practice_clone && cd ~/Eltex-practice_clone
+git clone https://github.com/Pavel-04/Eltex-practice.git .
+Cloning into '.'...
+remote: Enumerating objects: 16, done.
+remote: Counting objects: 100% (16/16), done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 16 (delta 0), reused 16 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (16/16), done.
+cd ~/Eltex-practice
+echo "##1 практика добавлена" >>README.md
+git add README.md
+git commit -m "Добавлена 1 практика"
+git commit -m "Добавлена 1 практика"
+[main 0c99079] Добавлена 1 практика
+ 1 file changed, 1 insertion(+)
+git push
+git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 381 bytes | 381.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/Pavel-04/Eltex-practice.git
+   6d4eb28..0c99079  main -> main
+cd ~/Eltex-practice_clone
+git fetch
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 361 bytes | 361.00 KiB/s, done.
+From https://github.com/Pavel-04/Eltex-practice
+   6d4eb28..0c99079  main       -> origin/main
+git log origin/main
+commit 0c990793ef71b4738f82cf5601958291b6c05db6 (origin/main, origin/HEAD)
+Author: Pavel-04 <mazinp77@ya.ru>
+Date:   Wed Oct 15 14:46:21 2025 +0000
+
+    Добавлена 1 практика
+
+commit 6d4eb28d262db51eb80cc5bdfa4b161ff9b6b9ed (HEAD -> main)
+Author: Pavel-04 <mazinp77@ya.ru>
+Date:   Wed Oct 15 14:39:48 2025 +0000
+
+    Добавлена 1 практика
+
+commit caaf9c72ccff730779c9cb47dbb498fa4fdf3459
+Author: Pavel-04 <mazinp77@ya.ru>
+Date:   Wed Oct 15 14:34:34 2025 +0000
+
+    Добавлена 1 практика
+
+commit 15a4678e44130dea05e476f9c4ee0c4aa90aa986
+Author: Pavel-04 <mazinp77@ya.ru>
+Date:   Wed Oct 15 14:15:42 2025 +0000
+
+    first commit
+git diff main origin/main
+diff --git a/README.md b/README.md
+index a3bc71b..144bc5e 100644
+--- a/README.md
++++ b/README.md
+@@ -1,2 +1,3 @@
+ #Eltex Practice
+ ## Добавлена 1 практика
++##1 практика добавлена
+git merge
+Updating 6d4eb28..0c99079
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+cd ~/Eltex-practice
+mkdir -p module2/task1
+mkdir module2/task2
+mkdir module2/task3
+git add .
+git commit -m "Добавлены каталоги для второй практики"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+git push
+Everything up-to-date
+
