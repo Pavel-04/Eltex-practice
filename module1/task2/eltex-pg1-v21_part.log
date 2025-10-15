@@ -1,0 +1,111 @@
+ls           lsb_release  lsinitramfs  lslocks      lsmod        lspci
+lsattr       lscpu        lsipc        lslogins     lsns         lsusb
+lsblk        lsfd         lsirq        lsmem        lsof
+$HISTCMD       $HISTCONTROL   $HISTFILE      $HISTFILESIZE  $HISTSIZE
+echo $HISTSIZE
+1000
+ls -d ~/.*
+/home/eltex-pg1-v21/.bash_history  /home/eltex-pg1-v21/.log
+/home/eltex-pg1-v21/.bash_logout   /home/eltex-pg1-v21/.profile
+/home/eltex-pg1-v21/.bashrc        /home/eltex-pg1-v21/.ssh
+/home/eltex-pg1-v21/.config        /home/eltex-pg1-v21/.viminfo
+/home/eltex-pg1-v21/.lesshst       /home/eltex-pg1-v21/.Xauthority
+/home/eltex-pg1-v21/.local
+export HISTTIMEFORMAT=%d/%m/%y %T 
+date
+Wed Oct 15 07:39:16 PM +07 2025
+history | tail -3
+  670  15/10/25 19:39:48 export HISTTIMEFORMAT="%d/%m/%y %T "
+  671  15/10/25 19:39:53 date
+  672  15/10/25 19:39:57 history | tail -3
+tail -3 ~/.bash_history
+cat practice2_eltex-pg1-v21_part1.log
+ssh root@172.16.9.195
+ls
+export PROMT_COMMAND='history -a'
+date
+history | tail -3
+  674  15/10/25 19:40:43 export PROMT_COMMAND='history -a'
+  675  15/10/25 19:40:48 echo "test"
+  676  15/10/25 19:40:58 history | tail -3
+tail -3 ~/.bash_history
+date
+#1760532101
+tail -3 ~/.bash_history
+DATE=$(date +%Y-%m-%d)
+echo $DATE
+2025-10-15
+TIME=$(date +%H:%M:%S)
+echo $TIME
+19:45:10
+DATE_TIME="$DATE $TIME"
+echo $DATE_TIME
+2025-10-15 19:45:10
+ls /bin/*[0-9]* /sbin/*[0-9]*  2>/dev/null
+/bin/addr2line                   /bin/x86_64-linux-gnu-ar
+/bin/b2sum                       /bin/x86_64-linux-gnu-as
+/bin/base32                      /bin/x86_64-linux-gnu-c++filt
+/bin/base64                      /bin/x86_64-linux-gnu-cpp
+/bin/bunzip2                     /bin/x86_64-linux-gnu-cpp-12
+/bin/bzip2                       /bin/x86_64-linux-gnu-dwp
+/bin/bzip2recover                /bin/x86_64-linux-gnu-elfedit
+/bin/c89                         /bin/x86_64-linux-gnu-gcc
+/bin/c89-gcc                     /bin/x86_64-linux-gnu-gcc-12
+/bin/c99                         /bin/x86_64-linux-gnu-gcc-ar
+/bin/c99-gcc                     /bin/x86_64-linux-gnu-gcc-ar-12
+/bin/cpan5.36-x86_64-linux-gnu   /bin/x86_64-linux-gnu-gcc-nm
+/bin/cpp-12                      /bin/x86_64-linux-gnu-gcc-nm-12
+/bin/diff3                       /bin/x86_64-linux-gnu-gcc-ranlib
+/bin/enc2xs                      /bin/x86_64-linux-gnu-gcc-ranlib-12
+/bin/gcc-12                      /bin/x86_64-linux-gnu-gcov
+/bin/gcc-ar-12                   /bin/x86_64-linux-gnu-gcov-12
+/bin/gcc-nm-12                   /bin/x86_64-linux-gnu-gcov-dump
+/bin/gcc-ranlib-12               /bin/x86_64-linux-gnu-gcov-dump-12
+/bin/gcov-12                     /bin/x86_64-linux-gnu-gcov-tool
+/bin/gcov-dump-12                /bin/x86_64-linux-gnu-gcov-tool-12
+/bin/gcov-tool-12                /bin/x86_64-linux-gnu-gold
+/bin/grub-menulst2cfg            /bin/x86_64-linux-gnu-gp-archive
+/bin/grub-mkpasswd-pbkdf2        /bin/x86_64-linux-gnu-gp-collect-app
+/bin/grub-syslinux2cfg           /bin/x86_64-linux-gnu-gp-display-html
+/bin/h2ph                        /bin/x86_64-linux-gnu-gp-display-src
+/bin/h2xs                        /bin/x86_64-linux-gnu-gp-display-text
+/bin/i386                        /bin/x86_64-linux-gnu-gprof
+/bin/linux32                     /bin/x86_64-linux-gnu-gprofng
+/bin/linux64                     /bin/x86_64-linux-gnu-ld
+/bin/lto-dump-12                 /bin/x86_64-linux-gnu-ld.bfd
+/bin/md5sum                      /bin/x86_64-linux-gnu-ld.gold
+/bin/md5sum.textutils            /bin/x86_64-linux-gnu-lto-dump
+/bin/pdb3                        /bin/x86_64-linux-gnu-lto-dump-12
+/bin/pdb3.11                     /bin/x86_64-linux-gnu-nm
+/bin/perl5.36.0                  /bin/x86_64-linux-gnu-objcopy
+/bin/perl5.36-x86_64-linux-gnu   /bin/x86_64-linux-gnu-objdump
+/bin/ping4                       /bin/x86_64-linux-gnu-ranlib
+/bin/ping6                       /bin/x86_64-linux-gnu-readelf
+/bin/pl2pm                       /bin/x86_64-linux-gnu-size
+/bin/pod2html                    /bin/x86_64-linux-gnu-strings
+/bin/pod2man                     /bin/x86_64-linux-gnu-strip
+/bin/pod2text                    /sbin/dumpe2fs
+/bin/pod2usage                   /sbin/e2freefrag
+/bin/py3clean                    /sbin/e2fsck
+/bin/py3compile                  /sbin/e2image
+/bin/py3versions                 /sbin/e2label
+/bin/pydoc3                      /sbin/e2mmpstatus
+/bin/pydoc3.11                   /sbin/e2scrub
+/bin/pygettext3                  /sbin/e2scrub_all
+/bin/pygettext3.11               /sbin/e2undo
+/bin/python3                     /sbin/e4crypt
+/bin/python3.11                  /sbin/e4defrag
+/bin/sha1sum                     /sbin/fsck.ext2
+/bin/sha224sum                   /sbin/fsck.ext3
+/bin/sha256sum                   /sbin/fsck.ext4
+/bin/sha384sum                   /sbin/killall5
+/bin/sha512sum                   /sbin/mke2fs
+/bin/ssh-argv0                   /sbin/mkfs.ext2
+/bin/systemd-id128               /sbin/mkfs.ext3
+/bin/traceroute6                 /sbin/mkfs.ext4
+/bin/traceroute6.db              /sbin/resize2fs
+/bin/x86_64                      /sbin/tune2fs
+/bin/x86_64-linux-gnu-addr2line  /sbin/update-grub2
+export PS1='\u@\h-$(date +%H:%M)> '
+bash --norc
+mkdir 2025-{01..12}

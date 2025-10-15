@@ -1,0 +1,50 @@
+cd ~
+mkdir -p D1/D2/D3
+touch D1/D2/file.txt
+echo Произвольный текст >> D1/D2/file.txt
+cd D1/D2/D3
+ln -s ../file.txt softlink.txt
+cd~
+ln D1/D2/file.txt D1/D2/D3/hardlink.txt
+cat D1/D2/D3/softlink.txt
+Произвольный текст
+cat D1/D2/D3/hardlink.txt
+Произвольный текст
+mv D1/D2/file.txt D1/
+cat D1/D2/D3/softlink.txt
+cat: D1/D2/D3/softlink.txt: No such file or directory
+cat D1/D2/D3/hardlink.txt
+Произвольный текст
+rm -rf D1/D2/
+find / -type f -size +20M 2>/dev/null | grep -v -E '^(/proc|/sys|/dev)' >> ${USER}_part3_gt50M.log
+while read file; do du -h "$file"; done < ${USER}_part3_gt50M.log
+31M     /usr/bin/x86_64-linux-gnu-lto-dump-12
+31M     /usr/lib/gcc/x86_64-linux-gnu/12/lto1
+32M     /usr/lib/gcc/x86_64-linux-gnu/12/cc1
+30M     /usr/lib/x86_64-linux-gnu/libicudata.so.72.1
+33M     /boot/initrd.img-6.1.0-31-amd64
+33M     /boot/initrd.img-6.1.0-32-amd64
+33M     /boot/initrd.img-6.1.0-40-amd64
+38M     /var/cache/apt/srcpkgcache.bin
+38M     /var/cache/apt/pkgcache.bin
+48M     /var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_binary-amd64_Packages
+49M     /var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_source_Sources
+32M     /var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_i18n_Translation-en
+find ~ -type f -mtime 0
+/home/eltex-pg1-v21/.ssh/id_rsa.pub
+/home/eltex-pg1-v21/.ssh/known_hosts
+/home/eltex-pg1-v21/.ssh/id_rsa
+/home/eltex-pg1-v21/.ssh/known_hosts.old
+/home/eltex-pg1-v21/D1/file.txt
+/home/eltex-pg1-v21/.bash_history
+/home/eltex-pg1-v21/eltex-pg1-v21_part3_gt50M.log
+/home/eltex-pg1-v21/practice2_eltex-pg1-v21_part1.log
+/home/eltex-pg1-v21/.Xauthority
+which find
+/usr/bin/find
+file /usr/bin/find
+/usr/bin/find: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=5545a6c7162d325fbe5ffabcbfe4e5521b66ce70, for GNU/Linux 3.2.0, stripped
+file /boot/initrd.img*
+/boot/initrd.img-6.1.0-31-amd64: ASCII cpio archive (SVR4 with no CRC)
+/boot/initrd.img-6.1.0-32-amd64: ASCII cpio archive (SVR4 with no CRC)
+/boot/initrd.img-6.1.0-40-amd64: ASCII cpio archive (SVR4 with no CRC)
