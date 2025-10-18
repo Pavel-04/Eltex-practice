@@ -1,0 +1,190 @@
+journalctl -b --since="$(date -d "now - $(cut -d' ' -f1 /proc/uptime) seconds" --iso-8601=seconds)" --until="$(date -d "now - $(cut -d' ' -f1 /proc/uptime) seconds + 20 seconds" --iso-8601=seconds)"
+Oct 15 07:52:10 localhost kernel: Linux version 6.8.0-55-generic (buildd@lcy02-amd64-095) (x86_64-li>
+Oct 15 07:52:10 localhost kernel: Command line: BOOT_IMAGE=/vmlinuz-6.8.0-55-generic root=/dev/mappe>
+Oct 15 07:52:10 localhost kernel: KERNEL supported cpus:
+Oct 15 07:52:10 localhost kernel:   Intel GenuineIntel
+Oct 15 07:52:10 localhost kernel:   AMD AuthenticAMD
+Oct 15 07:52:10 localhost kernel:   Hygon HygonGenuine
+Oct 15 07:52:10 localhost kernel:   Centaur CentaurHauls
+Oct 15 07:52:10 localhost kernel:   zhaoxin   Shanghai
+Oct 15 07:52:10 localhost kernel: BIOS-provided physical RAM map:
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x0000000000100000-0x00000000bffd9fff] usable
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x00000000bffda000-0x00000000bfffffff] reserved
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff] reserved
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x0000000100000000-0x000000013fffffff] usable
+Oct 15 07:52:10 localhost kernel: BIOS-e820: [mem 0x000000fd00000000-0x000000ffffffffff] reserved
+Oct 15 07:52:10 localhost kernel: NX (Execute Disable) protection: active
+Oct 15 07:52:10 localhost kernel: APIC: Static calls initialized
+Oct 15 07:52:10 localhost kernel: SMBIOS 2.8 present.
+Oct 15 07:52:10 localhost kernel: DMI: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6>
+Oct 15 07:52:10 localhost kernel: Hypervisor detected: KVM
+
+find / -name "auth.log" 2>/dev/null -exec awk '{
+    source = $4
+    $1=$2=$3=$4=""
+    message = substr($0, 5)
+    print source " | " message
+}' {} \; | sed 's/\[[0-9]*\]//g' | sort -t'|' -k1 | sed -n '300,320p'
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+pam_unix(cron:session): | session closed for user root
+
+find / -name "auth.log" 2>/dev/null -exec awk '{
+    source = $4
+    $1=$2=$3=$4=""
+    print source
+}' {} \; | sed 's/\[[0-9]*\]//g' | sort | uniq -c | sort -nr
+    664 pam_unix(cron:session):
+     74 pam_unix(sshd:session):
+     44 New
+     42 pam_unix(su:session):
+     40 Received
+     38 Accepted
+     36 Session
+     36 Removed
+     36 Disconnected
+     32 Loading
+     22 (to
+     21 pam_unix(systemd-user:session):
+     20 add
+     16 Finished
+     12 pam_unix(sudo:session):
+     11 group
+     10 Watching
+     10 new
+     10 Acquired
+      8 Connection
+      7 Server
+      6 Reloading
+      6 Collecting
+      5 changed
+      4 pam_unix(passwd:chauthtok):
+      3 System
+      3 root
+      2 user2
+      2 user1
+      2 The
+      2 pam_unix(su-l:session):
+      2 PAM
+      2 members
+      1 tech
+      1 password
+      1 pam_unix(sshd:auth):
+      1 pam_unix(login:session):
+      1 pam_unix(chpasswd:chauthtok):
+      1 Failed
+      1 Creating
+      1 change
+      1 Attempted
+
+awk -F':' '$7 == "/usr/sbin/nologin" {print $3, $1}' /etc/passwd | sort -nr | while read uid username; do
+    groups=$(awk -F':' -v user="$username" '$4 ~ user {printf "%s,", $1}' /etc/group | sed 's/,$//')
+    echo "$uid, $username, $groups"
+done
+65534, nobody,
+1003, user3, users,sharegroup
+998, systemd-network,
+997, systemd-timesync,
+992, systemd-resolve,
+991, polkitd,
+989, fwupd-refresh,
+109, sshd,
+108, usbmux,
+107, landscape,
+105, tcpdump,
+104, uuidd,
+103, syslog, adm
+101, messagebus,
+42, _apt,
+39, irc,
+38, list,
+34, backup,
+33, www-data,
+13, proxy,
+10, uucp,
+9, news,
+8, mail,
+7, lp,
+6, man,
+5, games,
+3, sys, adm
+2, bin,
+1, daemon,
+
+grep -i 'kernel'
+[    0.000000] KERNEL supported cpus:
+[    0.046668] Booting paravirtualized kernel on KVM
+[    0.047672] Kernel command line: BOOT_IMAGE=/vmlinuz-6.8.0-55-generic root=/dev/mapper/ubuntu--vg-ubuntu--lv ro
+[    0.047704] Unknown kernel command line parameters "BOOT_IMAGE=/vmlinuz-6.8.0-55-generic", will be passed to user space.
+[    0.111161] Memory: 3933500K/4193760K available (22528K kernel code, 4443K rwdata, 14344K rodata, 4988K init, 4716K bss, 260000K reserved, 0K cma-reserved)
+[    0.270335] DMA: preallocated 512 KiB GFP_KERNEL pool for atomic allocations
+[    0.270365] DMA: preallocated 512 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.270398] DMA: preallocated 512 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.508877] Loaded X.509 cert 'Build time autogenerated kernel key: e0bedf6fa049a1e09bd65ebab3904f14cdd5bc68'
+[    0.512021] Loaded X.509 cert 'Canonical Ltd. Kernel Module Signing: 88f752e560a1e0737e31163a466ad7b70a850c19'
+[    0.652827] Loaded X.509 cert 'Build time autogenerated kernel key: e0bedf6fa049a1e09bd65ebab3904f14cdd5bc68'
+[    0.672895] Freeing unused kernel image (initmem) memory: 4988K
+[    0.673649] Write protecting the kernel read-only data: 38912k
+[    0.674755] Freeing unused kernel image (rodata/data gap) memory: 2040K
+[    6.598188] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+[    6.610537] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+[    6.616802] systemd[1]: Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+[    6.644442] systemd[1]: Starting modprobe@configfs.service - Load Kernel Module configfs...
+[    6.648585] systemd[1]: Starting modprobe@dm_mod.service - Load Kernel Module dm_mod...
+[    6.655774] systemd[1]: Starting modprobe@drm.service - Load Kernel Module drm...
+[    6.658099] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+[    6.659815] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+[    6.663081] systemd[1]: Starting modprobe@loop.service - Load Kernel Module loop...
+[    6.706921] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+[    6.714225] systemd[1]: Starting systemd-remount-fs.service - Remount Root and Kernel File Systems...
+
+wc -l /var/log/kern.log
+3633 /var/log/kern.log
+
+awk '
+    /Commandline:/ {cmd=$0}
+    /Start-Date:/ {start=$0}
+    /End-Date:/ {end=$0; print cmd " ; " start " ; " end}
+' /var/log/apt/history.log | head -20
+Commandline: apt-get install --reinstall apt ; Start-Date: 2025-02-16  20:51:22 ; End-Date: 2025-02-16  20:51:24
+Commandline: apt-get install --reinstall base-files ; Start-Date: 2025-02-16  20:51:26 ; End-Date: 2025-02-16  20:51:28
+Commandline: apt-get install --reinstall base-passwd ; Start-Date: 2025-02-16  20:51:31 ; End-Date: 2025-02-16  20:51:32
+Commandline: apt-get install --reinstall bash ; Start-Date: 2025-02-16  20:51:35 ; End-Date: 2025-02-16  20:51:37
+Commandline: apt-get install --reinstall bsdutils ; Start-Date: 2025-02-16  20:51:39 ; End-Date: 2025-02-16  20:51:41
+Commandline: apt-get install --reinstall coreutils ; Start-Date: 2025-02-16  20:51:44 ; End-Date: 2025-02-16  20:51:45
+Commandline: apt-get install --reinstall dash ; Start-Date: 2025-02-16  20:51:48 ; End-Date: 2025-02-16  20:51:49
+Commandline: apt-get install --reinstall debconf ; Start-Date: 2025-02-16  20:51:52 ; End-Date: 2025-02-16  20:51:53
+Commandline: apt-get install --reinstall debianutils ; Start-Date: 2025-02-16  20:51:56 ; End-Date: 2025-02-16  20:51:58
+Commandline: apt-get install --reinstall diffutils ; Start-Date: 2025-02-16  20:52:00 ; End-Date: 2025-02-16  20:52:02
+Commandline: apt-get install --reinstall dpkg ; Start-Date: 2025-02-16  20:52:04 ; End-Date: 2025-02-16  20:52:06
+Commandline: apt-get install --reinstall e2fsprogs ; Start-Date: 2025-02-16  20:52:09 ; End-Date: 2025-02-16  20:52:10
+Commandline: apt-get install --reinstall findutils ; Start-Date: 2025-02-16  20:52:13 ; End-Date: 2025-02-16  20:52:14
+Commandline: apt-get install --reinstall gcc-14-base:amd64 ; Start-Date: 2025-02-16  20:52:17 ; End-Date: 2025-02-16  20:52:18
+Commandline: apt-get install --reinstall gpgv ; Start-Date: 2025-02-16  20:52:21 ; End-Date: 2025-02-16  20:52:23
+Commandline: apt-get install --reinstall grep ; Start-Date: 2025-02-16  20:52:25 ; End-Date: 2025-02-16  20:52:27
+Commandline: apt-get install --reinstall gzip ; Start-Date: 2025-02-16  20:52:29 ; End-Date: 2025-02-16  20:52:31
+Commandline: apt-get install --reinstall hostname ; Start-Date: 2025-02-16  20:52:34 ; End-Date: 2025-02-16  20:52:35
+Commandline: apt-get install --reinstall init-system-helpers ; Start-Date: 2025-02-16  20:52:38 ; End-Date: 2025-02-16  20:52:39
+Commandline: apt-get install --reinstall libacl1:amd64 ; Start-Date: 2025-02-16  20:52:42 ; End-Date: 2025-02-16  20:52:43
