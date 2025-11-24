@@ -9,6 +9,13 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
+
+volatile sig_atomic_t stop = 0;
+
+void handle_signal(int sig) {
+    stop = 1;
+}
 
 void randStr(char* data, size_t size) {
     data[0] = '\0';
@@ -24,11 +31,18 @@ void randStr(char* data, size_t size) {
         strncat(data, str, size - strlen(data) - 1);
     }
 }
-void find_min_max(char* line) {
-    line[strcspn(line, "\n")] = '\0';
+
+void find_min_max(const char* line) {
+    char line_copy[256];
+    strncpy(line_copy, line, sizeof(line_copy) - 1);
+    line_copy[sizeof(line_copy) - 1] = '\0';
+    
+    char* newline = strchr(line_copy, '\n');
+    if (newline) *newline = '\0';
+    
     int max = 0;
     int min = 256;
-    char* tmp = strtok(line, " ");
+    char* tmp = strtok(line_copy, " ");
     
     while(tmp != NULL) {
         int number = atoi(tmp);
@@ -36,109 +50,126 @@ void find_min_max(char* line) {
         if(number < min) min = number;
         tmp = strtok(NULL, " ");
     }
-    printf("Consumer %s, Max %d, Min %d\n", line, max, min);
+    printf("Consumer: Numbers %s, Max %d, Min %d\n", line_copy, max, min);
 }
 
-int main(int argc, char*argv[]){
-    char data[256];
+int main(int argc, char* argv[]){
     if (argc != 2) {
         printf("Использование: %s <имя_файла>\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     
+    signal(SIGINT, handle_signal);
+    signal(SIGTERM, handle_signal);
+    
     srand(time(NULL));
-    char* filename=argv[1];
+    char* filename = argv[1];
     char temp_filename[256];
     char line[256];
+    
     snprintf(temp_filename, sizeof(temp_filename), "%s.temp", filename);
-    FILE* f=fopen(filename,"a");
-    if (f == NULL) {
-        perror("fopen file");
+    
+    sem_t *sem = sem_open(filename, O_CREAT, 0644, 1);
+    if (sem == SEM_FAILED) {
+        perror("sem_open");
         exit(EXIT_FAILURE);
     }
-    sem_t *sem = sem_open(filename, O_CREAT, 0644, 1);
-    pid_t pid;
-
-    switch (pid=fork()){
-        case -1:
-            perror("fork");
-            exit(EXIT_FAILURE);
-        case 0:
-            while(1) {
-            sem_wait(sem);
-        
+    
+    pid_t pid = fork();
+    
+    if (pid == -1) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
+    
+    if (pid == 0) {
+        while(!stop) {
+            if (sem_wait(sem) == -1) {
+                if (errno == EINTR) continue;
+                perror("sem_wait consumer");
+                break;
+            }
+            
             FILE *f = fopen(filename, "r");
             if (f == NULL) {
-                perror("fopen file");
-                exit(EXIT_FAILURE);
+                perror("fopen file consumer");
+                sem_post(sem);
+                break;
             }
-        
+            
             FILE *temp_f = fopen(temp_filename, "w");
             if (temp_f == NULL) {
                 perror("fopen temp file");
                 fclose(f);
-                exit(EXIT_FAILURE);
+                sem_post(sem);
+                break;
             }
-        
+            
             int processed = 0;
             while(fgets(line, sizeof(line), f) != NULL) {
                 if (line[0] == '#') {
                     fputs(line, temp_f);
                     continue;
                 }
-            
-                if (!processed) {
-                    char original_line[256];
-                    strcpy(original_line, line);
-                    find_min_max(original_line);
-                    processed = 1;
                 
+                if (!processed) {
+                    find_min_max(line);
+                    processed = 1;
                     fputs("# ", temp_f); 
                     fputs(line, temp_f); 
                 } else {
                     fputs(line, temp_f);
                 }
             }
-        
+            
             fclose(f);
             fclose(temp_f);
-            rename(temp_filename, filename);
-        
+            
+            if (rename(temp_filename, filename) == -1) {
+                perror("rename");
+            }
+            
             sem_post(sem);
+            
             if (!processed) {
                 sleep(2);
             } else {
                 sleep(1);
             }
-        }      
-        default:
-            while(1){
-                char data[256];
-                randStr(data, sizeof(data));
-                printf("%s\n", data);
-                sem_wait(sem);
-
-                FILE* f=fopen(filename,"a");
-                if (f == NULL) {
-                    perror("fopen file");
-                    exit(EXIT_FAILURE);
-                }
-                fputs(data, f);
-                fputs("\n", f);
-                fclose(f);
+        }
+    } else {
+        while(!stop) {
+            char data[256];
+            randStr(data, sizeof(data));
+            printf("Producer: %s\n", data);
+            
+            if (sem_wait(sem) == -1) {
+                if (errno == EINTR) continue;
+                perror("sem_wait producer");
+                break;
+            }
+            
+            FILE* f = fopen(filename, "a");
+            if (f == NULL) {
+                perror("fopen file producer");
                 sem_post(sem);
-                sleep(1);
-
+                break;
+            }
+            fputs(data, f);
+            fputs("\n", f);
+            fclose(f);
+            
+            sem_post(sem);
+            sleep(1);
+        }
+        
+        wait(NULL);
     }
-
-    }
+    
     sem_close(sem);
-    sem_unlink(filename);
+    if (pid != 0) {
+        sem_unlink(filename);
+    }
     
-    
-
-    
-
-
-
+    return 0;
 }
