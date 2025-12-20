@@ -34,7 +34,7 @@ static ssize_t foo_store(struct kobject *kobj, struct kobj_attribute *attr,
                       const char *buf, size_t count)
 {
         sscanf(buf, "%du", &test);
-        if(test==0 || test>8)
+        if(test<1 || test>8)
 			return -EINVAL;
         return count;
 }
